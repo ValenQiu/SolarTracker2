@@ -35,6 +35,8 @@ The custom GUI for this projectis a user friendly interface with various functio
   <img width = "60%" src="/img/GUI.PNG" alt="GUI">
 </p>
 
+## Contact
+If you have encounter or interested in contributing, please contat the author [Valen Qiu](https://github.com/ValenQiu) and our labs ([REALab](https://www.li-realab.info/), [Romi-Lab](https://www.romi-lab.org/)), or submit a pull request on GitHub.
 
 
 
