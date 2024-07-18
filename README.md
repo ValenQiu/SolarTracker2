@@ -1,8 +1,6 @@
 # SolarTracker2
 The 2nd version of Solar Tracker Project
 
-This is the repository for the project. 
-
 For previous version, please also refer to [SolarTracker](https://github.com/ValenQiu/SolarTracker)
 
 ## Contents
