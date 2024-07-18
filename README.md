@@ -23,7 +23,16 @@ The PTZ follows the Pelco-D communication protocol, detail information can be fo
 
 This project provides a custom PTZ controller class that enables communication with a PTZ device using Python. The class handles the encoding and decoding of commands and responses to/from the PTZ unit. For more detailed information, please refer to [here]().
 
-##
+## GUI
+The custom GUI for this projectis a user friendly interface with various functions. This GUI is developed based on `tkinter`. For more information, please refer to [here]()
+
+<p align="center">
+  <img src="/img/GUI.PNG" alt="GUI" style="max-width: 100%; max-height: 600px;">
+</p>
+
+## Sun Angle Tracker & Visualizer
+
+
 
 
 
