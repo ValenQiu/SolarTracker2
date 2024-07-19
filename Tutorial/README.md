@@ -1,6 +1,6 @@
 # Tutorial
 
-## 1. Download & Initialization
+## 1. Download
 You can clone all the code in this repository by using this code:
 ```
 git clone https://github.com/ValenQiu/SolarTracker2.git
@@ -17,7 +17,7 @@ The project relies on the following Python libraries and their versions (tested)
 ```
 As well as all supports from the `pvlib`.
 
-## 2. Connect to PTZ
+## 2. Initialization & Connect to PTZ
 Run the main function ([here](/main/main.py)), and you will see the following information:
 
 (From the python terminal) It will scan all available COM ports in the device, and print out. 
@@ -82,5 +82,6 @@ Otherwise, a message box will pop up and show the error message:
   <img width="60%" src="/media/tutorial_connection_fail.png" alt="tutorial_connection_fail">
 </p>
 
-
+## 3. Control the PTZ
+WILL ADD SOME CONTENTS HERE.
 
