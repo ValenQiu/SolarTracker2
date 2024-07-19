@@ -35,7 +35,7 @@ The Sun Angle Tracker & Visualizer is based on `pvlib`. It can update the sun's 
 </p>
 
 ### GUI
-The custom GUI for this projectis a user friendly interface with various functions. This GUI is developed based on `tkinter`. For more information, please refer to [here]().
+The custom GUI for this projectis a user friendly interface with various functions. This GUI is developed based on `tkinter`. For more information, please refer to [here](https://github.com/ValenQiu/SolarTracker2/tree/main/GUI).
 
 <p align="center">
   <img width = "60%" src="/media/GUI.PNG" alt="GUI">
