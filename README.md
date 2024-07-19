@@ -13,7 +13,7 @@ This repository includes:
 The coordinate in this project is shown in the figure below. Which the Solar Zenith angle (Tile Angle for PTZ) is the angle between the local zenith axis and the line of sight, and the Solar Azimuth (Pan Angle for PTZ) is the angle between the north oriented axis and the plane along the horizon.
 
 <p align="center">
-  <img width="60%" src="/img/coordinate.PNG" alt="Coordinate">
+  <img width="60%" src="/media/coordinate.PNG" alt="Coordinate">
 </p>
 
 ## PTZ Controller
@@ -25,14 +25,14 @@ This project provides a custom PTZ controller class that enables communication w
 The Sun Angle Tracker & Visualizer is based on `pvlib`. It can update the sun's zenith and azimuth angle (and some other information as well). Besides, this project also provide a visulizer tool for visulizing the angle, as well as showing the sun path in a period of time. For more information, please refer to [here]().
 
 <p align="center">
-  <img width = "60%" src="https://github.com/ValenQiu/SolarTracker2/blob/main/img/visualizer.gif" alt="visualizer">
+  <img width = "60%" src="/media/visualizer.gif" alt="visualizer">
 </p>
 
 ## GUI
 The custom GUI for this projectis a user friendly interface with various functions. This GUI is developed based on `tkinter`. For more information, please refer to [here]().
 
 <p align="center">
-  <img width = "60%" src="/img/GUI.PNG" alt="GUI">
+  <img width = "60%" src="/media/GUI.PNG" alt="GUI">
 </p>
 
 ## Contact
