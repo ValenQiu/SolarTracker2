@@ -40,7 +40,7 @@ It is recommended to use this function for the first time.
 It is shown as below:
 
 <p align="center">
-  <img width="60%" src="/media/tutorial_connection_1.png" alt="tutorial_connection_1">
+  <img width="80%" src="/media/tutorial_connection_1.png" alt="tutorial_connection_1">
 </p>
 
 For Linux, is it shown as:
@@ -50,7 +50,7 @@ For Linux, is it shown as:
 
 After confirming the port name, you can comment it as you wish.
 
-Consider to the ease of use, there is default value of the port name in the GUI, which is shown below:
+Consider to the ease of use, there is default value of the port name and baud rate (which is 2400 for this PTZ) in the GUI, which is shown below:
 <p align="center">
   <img width="60%" src="/media/tutorial_connection_3.png" alt="tutorial_connection_3">
 </p>
@@ -67,5 +67,20 @@ Linux:
 ```python
 default_port_name = '/dev/ttyUSB0'
 ```
+
+Besides, at this moment, the GUI has not yet connected to the PTZ, thus all functions are disabled. 
+By clicking the `Connect` button, if the port name and baud rate are correct (normal just need to confirm the port name), 
+your device will connect to the PTZ, and enable all functions (as shwon below).
+
+<p align="center">
+  <img width="60%" src="/media/tutorial_connection_success.png" alt="tutorial_connection_success">
+</p>
+
+Otherwise, a message box will pop up and show the error message:
+
+<p align="center">
+  <img width="60%" src="/media/tutorial_connection_fail.png" alt="tutorial_connection_fail">
+</p>
+
 
 
