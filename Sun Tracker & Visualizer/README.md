@@ -14,6 +14,6 @@ The `Solar_days.py` can extract the sun data in a period of time, and play the a
 ### Real-time Solar Angle Updating & Visualizing
 
 <p align="center">
-  <img width = "60%" src="/media/Solar_realtime.png" alt="Solar_realtime">
+  <img width = "30%" src="/media/Solar_realtime.png" alt="Solar_realtime">
 </p>
 
