@@ -25,7 +25,7 @@ The coordinate in this project is shown in the figure below. Which the Solar Zen
 ### PTZ Controller
 The PTZ follows the Pelco-D communication protocol, detail information can be found from the [Pelco-D tutorial](https://www.commfront.com/pages/pelco-d-protocol-tutorial), [Pelco-D protocol command list](https://www.epiphan.com/userguides/LUMiO12x/Content/UserGuides/PTZ/3-operation/PELCODcommands.htm), [Pelco Support Community](https://support.pelco.com/s/article/How-to-Troubleshoot-PTZ-Control-Issues-1538586696855?language=en_US).
 
-This project provides a custom PTZ controller class that enables communication with a PTZ device using Python. The class handles the encoding and decoding of commands and responses to/from the PTZ unit. For more detailed information, please refer to [here]().
+This project provides a custom PTZ controller class that enables communication with a PTZ device using Python. The class handles the encoding and decoding of commands and responses to/from the PTZ unit. For more detailed information, please refer to [here](https://github.com/ValenQiu/SolarTracker2/tree/main/PTZ%20Control).
 
 ### Sun Angle Tracker & Visualizer
 The Sun Angle Tracker & Visualizer is based on `pvlib`. It can update the sun's zenith and azimuth angle (and some other information as well). Besides, this project also provide a visulizer tool for visulizing the angle, as well as showing the sun path in a period of time. For more information, please refer to [here](https://github.com/ValenQiu/SolarTracker2/tree/main/Sun%20Tracker%20%26%20Visualizer).
