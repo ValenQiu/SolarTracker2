@@ -1,3 +1,10 @@
+"""
+Author:     Qiu Liuming, Valen
+Date:       2024.06.28
+Version:    v4.1
+Contact:    valen.qiu@connect.polyu.hk
+"""
+
 import tkinter
 import tkinter as tk
 from tkinter import ttk
