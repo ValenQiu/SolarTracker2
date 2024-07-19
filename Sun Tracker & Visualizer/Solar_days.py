@@ -13,7 +13,7 @@ def get_solar_positions_for_a_day(latitude, longitude, altitude, timezone, start
     if isinstance(start_date, str):
         start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
 
-    end_date = start_date + datetime.timedelta(days=10)
+    end_date = start_date + timedelta
     times = pd.date_range(
         start=datetime.datetime(start_date.year, start_date.month, start_date.day, 6, 0, 0,
                                tzinfo=pytz.timezone(timezone)),
@@ -34,9 +34,10 @@ longitude = 114.17933  # HK经度
 altitude = 35  # HK海拔
 timezone = 'Asia/Hong_Kong'  # 时区
 start_date = '2024-06-01'
+timedelta = datetime.timedelta(days=10)
 
 # Animation parameters
-interval = 1  # Interval between frames in milliseconds (0.1 seconds)
+interval = 1  # Interval between frames in milliseconds
 
 # Initialize the figure and 3D axes
 fig = plt.figure(figsize=(12, 6))
