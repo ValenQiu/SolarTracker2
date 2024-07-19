@@ -27,7 +27,7 @@ The PTZ follows the Pelco-D communication protocol, detail information can be fo
 
 This project provides a custom PTZ controller class that enables communication with a PTZ device using Python. The class handles the encoding and decoding of commands and responses to/from the PTZ unit. For more detailed information, please refer to [here]().
 
-### Sun Angle Tracker & Visualizer
+### [Sun Angle Tracker & Visualizer](/Sun Tracker & Visualizer)
 The Sun Angle Tracker & Visualizer is based on `pvlib`. It can update the sun's zenith and azimuth angle (and some other information as well). Besides, this project also provide a visulizer tool for visulizing the angle, as well as showing the sun path in a period of time. For more information, please refer to [here]().
 
 <p align="center">
