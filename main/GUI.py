@@ -1,3 +1,10 @@
+"""
+Author:     Qiu Liuming, Valen
+Date:       2024.06.28
+Version:    v4.1
+Contact:    valen.qiu@connect.polyu.hk
+"""
+
 import tkinter
 import tkinter as tk
 from tkinter import ttk
@@ -635,5 +642,5 @@ class GUI:
     #     self._root.after(self._sun.interval, self.update_ptz_position)
 
 
-# if __name__ == "__main__":
-#     gui = GUI()
+if __name__ == "__main__":
+    gui = GUI()
