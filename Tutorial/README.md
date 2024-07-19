@@ -15,8 +15,45 @@ The project relies on the following Python libraries and their versions (tested)
 - tk==0.1.0
 - pyserial>=3.5
 ```
+As well as all supports from the `pvlib`.
 
 ## 2. Connect to PTZ
 Run the main function ([here](/main/main.py)), and you will see the following information:
 
-(From the python terminal) It will scan all available COM ports in the device, and print out. It is recommanded to use this function for the first time.
+(From the python terminal) It will scan all available COM ports in the device, and print out. 
+The code is located in [here](https://github.com/ValenQiu/SolarTracker2/blob/d46249ba567d52d24c70583080022112b846cabb/main/PTZ.py#L23).
+```python
+import sys
+import serial
+
+...
+
+ports_list = list(serial.tools.list_ports.comports())  # 获取所有串口设备实例
+if len(ports_list) <= 0:
+    print("无可用的串口设备！")
+else:
+    print("可用的串口设备如下：")
+    for port in ports_list:  # 依次输出每个设备对应的串口号和描述信息
+        print(list(port)[0], list(port)[1])
+```
+It is recommended to use this function for the first time.
+It is shown as below:
+
+<p align="center">
+  <img width="60%" src="/media/tutorial_connection_1" alt="tutorial_connection_1">
+</p>
+
+For Linux, is it shown as:
+<p align="center">
+  <img width="60%" src="/media/tutorial_connection_2" alt="tutorial_connection_2">
+</p>
+
+After confirming the port name, you can comment it as you wish.
+
+Consider to the ease of use, there is default value of the port name in the GUI, which is shown below:
+<p align="center">
+  <img width="60%" src="/media/tutorial_connection_3" alt="tutorial_connection_3">
+</p>
+
+It is recommended to change the default port name to the actual port name of the PTZ (could be different for different devices).
+To do that, please go to [here]()

@@ -16,6 +16,7 @@ from PTZ import PTZ
 from Sun import SUN
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
+default_port_name = 'COM3'
 
 class GUI:
     """
@@ -314,7 +315,7 @@ class GUI:
         # Enter COM port number
         self.entry_COM = tk.Entry(frame_c, width=10)
         self.entry_COM.grid(row=1, column=0, padx=10, pady=(2, 10))
-        self.entry_COM.insert(0, 'COM3')
+        self.entry_COM.insert(0, default_port_name)
 
         # Baud rate setting
         label_baud = tk.Label(frame_c, text="Baud Rate:")
