@@ -40,20 +40,32 @@ It is recommended to use this function for the first time.
 It is shown as below:
 
 <p align="center">
-  <img width="60%" src="/media/tutorial_connection_1" alt="tutorial_connection_1">
+  <img width="60%" src="/media/tutorial_connection_1.png" alt="tutorial_connection_1">
 </p>
 
 For Linux, is it shown as:
 <p align="center">
-  <img width="60%" src="/media/tutorial_connection_2" alt="tutorial_connection_2">
+  <img width="60%" src="/media/tutorial_connection_2.png" alt="tutorial_connection_2">
 </p>
 
 After confirming the port name, you can comment it as you wish.
 
 Consider to the ease of use, there is default value of the port name in the GUI, which is shown below:
 <p align="center">
-  <img width="60%" src="/media/tutorial_connection_3" alt="tutorial_connection_3">
+  <img width="60%" src="/media/tutorial_connection_3.png" alt="tutorial_connection_3">
 </p>
 
 It is recommended to change the default port name to the actual port name of the PTZ (could be different for different devices).
-To do that, please go to [here]()
+To do that, please go to [here](https://github.com/ValenQiu/SolarTracker2/blob/f29d7647d813f0f2adcce7b27a252718cbb46446/main/GUI.py#L19)
+to edit the `default_port_name` string into your actual port name.
+
+Windows:
+```python
+default_port_name = 'COM3'
+```
+Linux:
+```python
+default_port_name = '/dev/ttyUSB0'
+```
+
+
