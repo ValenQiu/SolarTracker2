@@ -12,6 +12,7 @@ This repository includes:
 ## How to use
 To use this Solar Tracker, please download the codes in [here](/main) and run the `main.py`.
 
+### QUICK START
 For further details, please refer to: [Tutorial](https://github.com/ValenQiu/SolarTracker2/tree/main/Tutorial)
 
 ## Technical Information
