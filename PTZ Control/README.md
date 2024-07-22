@@ -215,3 +215,6 @@ The position can be convert back to the original value by using the code:
 ```python
 position = (high_byte << 8) + low_byte
 ```
+
+## Contact
+If you have encounter or interested in contributing, please contat the author [Valen Qiu](https://github.com/ValenQiu) and our labs ([REALab](https://www.li-realab.info/), [Romi-Lab](https://www.romi-lab.org/)), or submit a pull request on GitHub.

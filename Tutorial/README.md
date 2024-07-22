@@ -102,5 +102,9 @@ the format of the Pelco-D is defined as:
 - Byte 6 (Data 2) - tilt speed, range from 00 (stop) to 3F (maximum speed)
 - Byte 7 (Checksum) - sum of bytes (excluding the synchronization byte), then modulo 100 (Decimal code: 256)
 
-For detailed information of how to use this protocol to control the PTZ, as well as the PTZ library for this project, 
+### Python PTZ Controller
+For detailed information of how to use this protocol to control the PTZ, as well as the Python PTZ Controller for this project, 
 please refer to [here](https://github.com/ValenQiu/SolarTracker2/tree/main/PTZ%20Control).
+
+## Contact
+If you have encounter or interested in contributing, please contat the author [Valen Qiu](https://github.com/ValenQiu) and our labs ([REALab](https://www.li-realab.info/), [Romi-Lab](https://www.romi-lab.org/)), or submit a pull request on GitHub.

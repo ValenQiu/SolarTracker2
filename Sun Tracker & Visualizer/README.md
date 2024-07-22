@@ -51,3 +51,5 @@ start_date = '2024-06-01'
 timedelta = datetime.timedelta(days=10)
 ```
 
+## Contact
+If you have encounter or interested in contributing, please contat the author [Valen Qiu](https://github.com/ValenQiu) and our labs ([REALab](https://www.li-realab.info/), [Romi-Lab](https://www.romi-lab.org/)), or submit a pull request on GitHub.

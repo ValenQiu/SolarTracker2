@@ -16,7 +16,10 @@ from PTZ import PTZ
 from Sun import SUN
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
+# Windows
 default_port_name = 'COM3'
+# Linux
+# default_port_name = '/dev/ttyUSB0'
 
 class GUI:
     """
@@ -64,6 +67,10 @@ class GUI:
 
     # Flag for tracking the sun
     sun_track_flag = False
+
+    # Sun Angles
+    zenith = 0.0
+    azimuth = 0.0
 
     # Buttons of Sun Tracking
     track_on = None
@@ -242,6 +249,8 @@ class GUI:
         tilt_speed = chr(tilt_speed)
         pan_speed = chr(pan_speed)
         self._ptz.set_speed(pan_speed, tilt_speed)
+        self.pan_speed_label['text'] = self.pan_speed.get()
+        self.tilt_speed_label['text'] = self.tilt_speed.get()
 
     ##################################################################################################
     # Query position
@@ -313,7 +322,7 @@ class GUI:
         label_port.grid(row=0, column=0, padx=10, pady=(10, 2), sticky="w")
 
         # Enter COM port number
-        self.entry_COM = tk.Entry(frame_c, width=10)
+        self.entry_COM = tk.Entry(frame_c, width=8)
         self.entry_COM.grid(row=1, column=0, padx=10, pady=(2, 10))
         self.entry_COM.insert(0, default_port_name)
 
@@ -430,7 +439,8 @@ class GUI:
         label_tilt.grid(row=0, column=0, padx=(3, 3), pady=(3, 3), sticky="e")
 
         # Create the slider for tilt speed control
-        self.tilt_speed = tk.Scale(frame_sliders, from_=10, to=63, orient=tk.HORIZONTAL, length=75, showvalue=0)
+        self.tilt_speed = tk.Scale(frame_sliders, from_=10, to=63, orient=tk.HORIZONTAL, length=75, showvalue=0,
+                                   command=self.update_tilt_speed_label)
         self.tilt_speed.set(31)  # default value
         self.tilt_speed.grid(row=0, column=1, padx=(3, 3), pady=(3, 3), sticky="w")
 
@@ -442,7 +452,8 @@ class GUI:
         label_pan.grid(row=1, column=0, padx=(3, 3), pady=(3, 3), sticky="e")
 
         # Create the slider for pan speed control
-        self.pan_speed = tk.Scale(frame_sliders, from_=10, to=63, orient=tk.HORIZONTAL, length=75, showvalue=0)
+        self.pan_speed = tk.Scale(frame_sliders, from_=10, to=63, orient=tk.HORIZONTAL, length=75, showvalue=0,
+                                  command=self.update_pan_speed_label)
         self.pan_speed.set(31)  # default value
         self.pan_speed.grid(row=1, column=1, padx=(3, 3), pady=(3, 3), sticky="w")
 
@@ -455,6 +466,12 @@ class GUI:
 
         self.disable_frame(frame_buttons)
         self.disable_frame(frame_sliders)
+
+    def update_pan_speed_label(self, value):
+        self.pan_speed_label.config(text=int(value))
+
+    def update_tilt_speed_label(self, value):
+        self.tilt_speed_label.config(text=int(value))
 
     def load_position_frame(self):
         frame_pos = tkinter.LabelFrame(self._root, text="Set PTZ Position", name='position')
@@ -570,27 +587,41 @@ class GUI:
 
         # Create a subframe for the plot
         frame_plot = tk.Frame(frame_sun, name='plot')
-        frame_plot.grid(row=0, column=0, padx=(5, 5), pady=(10, 10))
+        frame_plot.grid(row=0, column=0, padx=(5, 5), pady=5)
         # Create the canvas to display the animation
         canvas = FigureCanvasTkAgg(self._sun.fig, master=frame_plot)
         canvas.draw()
         canvas.get_tk_widget().configure(width=290, height=290)
         canvas.get_tk_widget().pack()
 
-        # Create a subframe for the buttons
-        frame_on_off = tk.Frame(frame_sun, name='state')
-        frame_on_off.grid(row=1, column=0, padx=(3, 3), pady=(10, 10))
+        # Create a subframe for the functional elements
+        frame_func = tk.Frame(frame_sun, name='state')
+        frame_func.grid(row=1, column=0, padx=(3, 3), pady=2)
 
-        label_track = tk.Label(frame_on_off, text='Track')
-        label_track.grid(row=0, column=0, padx=(3, 3), pady=3, sticky="w")
+        # Zenith
+        zenith_label = tk.Label(frame_func, text='Zenith: ')
+        zenith_label.grid(row=0, column=0, padx=(3, 3), pady=3, sticky="w")
 
-        self.track_on = tk.Button(frame_on_off, text="ON", bg="lightblue", width=5, command=self.track_sun_on)
-        self.track_on.grid(row=0, column=1, padx=(3, 3), pady=5)
+        self.zenith = tk.Label(frame_func, text=self.zenith)
+        self.zenith.grid(row=0, column=1, padx=(3, 3), pady=3, sticky="w")
 
-        self.track_off = tk.Button(frame_on_off, text="OFF", bg="lightblue", width=5,state="disabled", command=self.track_sun_off)
-        self.track_off.grid(row=0, column=2, padx=(3, 3), pady=5)
+        # Azimuth
+        azimuth_label = tk.Label(frame_func, text='Azimuth: ')
+        azimuth_label.grid(row=0, column=2, padx=(3, 3), pady=3, sticky="w")
 
-        self.disable_frame(frame_on_off)
+        self.azimuth = tk.Label(frame_func, text=self.azimuth)
+        self.azimuth.grid(row=0, column=3, padx=(3, 3), pady=3, sticky="w")
+
+        label_track = tk.Label(frame_func, text='Track')
+        label_track.grid(row=1, column=0, padx=(3, 3), pady=3, sticky="w")
+
+        self.track_on = tk.Button(frame_func, text="ON", bg="lightblue", width=5, command=self.track_sun_on)
+        self.track_on.grid(row=1, column=1, padx=(3, 3), pady=5)
+
+        self.track_off = tk.Button(frame_func, text="OFF", bg="lightblue", width=5,state="disabled", command=self.track_sun_off)
+        self.track_off.grid(row=1, column=2, padx=(3, 3), pady=5)
+
+        self.disable_frame(frame_func)
 
     def on_button_click(self):
         # user_input = entry_COM.get()
@@ -604,17 +635,21 @@ class GUI:
     def update_solar_position(self):
         self._sun.update(0)
         self._root.after(self._sun.interval, self.update_solar_position)
-
+        zenith, azimuth = self._sun.get_solar_position()
+        zenith = float(zenith)
+        azimuth = float(azimuth)
+        zenith = round(float(zenith), 2)
+        azimuth = round(float(azimuth), 2)
+        self.zenith['text'] = zenith
+        self.azimuth['text'] = azimuth
+        print("Zebutg: ", zenith)
+        print("Azimuth: ", azimuth)
         print(self.sun_track_flag)
+
         if self._ptz is None:
             return
         if self.sun_track_flag is not False:
             print("it should track now")
-            zenith, azimuth = self._sun.get_solar_position()
-            zenith = float(zenith)
-            azimuth = float(azimuth)
-            print("Zebutg: ", zenith)
-            print("Azimuth: ", azimuth)
             self._ptz.set_pan_position(azimuth)
             self._ptz.set_tilt_position(zenith)
         else:
