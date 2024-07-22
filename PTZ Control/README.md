@@ -133,3 +133,85 @@ constructing the command message and send the message to the PTZ.
         self._device.write(cmd)
         time.sleep(0.05)
 ```
+
+By giving the `side` variable of this function, the PTZ will move towards the desired direction. For example, if I want the PTZ to move to right:
+```python
+self.move_to_side('RIGHT')
+```
+
+#### Set Joint Angle
+The PTZ has two joints, which is the tilt joint (zenith angle) and the pan joint (azimuth angle).
+We can call the function `set_tilt_position(self, angle)` and `set_pan_position(self, angle)` 
+to control each joint moves to the desired position.
+
+Code of setting the pan joint position:
+```python
+    def set_pan_position(self, angle):
+        """
+        Set Pan Position    | 0xFF | Address 0x01 | 0x00 | 0x4B | Value High Byte | Value Low Byte | Checksum |
+        """
+        """
+           Converts an angle (in degrees) into high and low byte values.
+
+           Parameters:
+           angle (float): The angle in degrees.
+
+           Returns:
+           tuple: A tuple containing the high byte and low byte values.
+           """
+        # Ensure the angle is within the valid range of 0 to 360 degrees
+        angle = angle * 100
+
+        # Calculate the high byte and low byte values
+        high = int(angle // 256)
+        low = int(angle % 256)
+
+        # Convert the MSB and LSB to the correct format
+        high_hex = chr(high)
+        low_hex = chr(low)
+
+        cmd = self._command._construct_cmd(command2='SET-PAN', pan_speed=high_hex,
+                                           tilt_speed=low_hex)
+        print("set pan position: ", end='')
+        for byte in cmd:
+            print(f"{byte:02X}", end=' ')
+        print()
+        self._device.write(cmd)
+```
+
+The similar format with the tilt joint.
+
+#### Query Joint Position
+To query the joint position, it needs to first send the query request to the PTZ, and then decode the return message.
+According to the protocol, the request message is:
+
+| Description                  | 0xFF | Address | Command 1 | Command 2 | Data 1 | Data 2 | Checksum |
+|------------------------------|------|---------|---------|--------|--------|----------|----------
+| Query Pan Position           | 0xFF | 0x01 |  0x00 | 0x51 | 0x00 | 0x00 | SUM |
+| Query Pan Position Response  | 0xFF | 0x01 |  0x00 | 0x59 | Value High Byte | Value Low Byte | SUM |
+| Query Tilt Position           | 0xFF | 0x01 |  0x00 | 0x53 | 0x00 | 0x00 | SUM |
+| Query Tilt Position Response  | 0xFF | 0x01 |  0x00 | 0x5B | Value High Byte | Value Low Byte | SUM |
+
+Where the `High Byte` and `Low Byte` are also called "High-Order Byte" and "Low-Order Byte". 
+
+"We generally write numbers from left to right, with the most significant digit first. To understand what is meant by
+the "significance" of a digit, think of how much happier you would be if the first digit of your paycheck was increased 
+by one compared to the last digit being increased by one.
+
+The bits in a byte of computer memory can be considered digits of a number written in base 2. 
+That means the least significant bit represents one, the next bit represents 2´1, or 2, the next bit represents 2´2´1, 
+or 4, and so on. If you consider two bytes of memory as representing a single 16-bit number, one byte will hold the 
+least significant 8 bits, and the other will hold the most significant 8 bits. Figure shows the bits arranged into two 
+bytes. The byte holding the least significant 8 bits is called the least significant byte, or low-order byte. 
+The byte containing the most significant 8 bits is the most significant byte, or high- order byte." 
+([What is meant by high-order and low-order bytes?](https://www.indiabix.com/technical/c/bits-and-bytes/2))
+
+
+<p align="center">
+  <img width="60%" src="/media/high_low_bytes.png" alt="high_low_bytes">
+</p>
+
+The position can be convert back to the original value by using the code:
+```python
+position = (high_byte << 8) + low_byte
+```
