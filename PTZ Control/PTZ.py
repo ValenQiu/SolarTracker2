@@ -138,7 +138,10 @@ class PTZ:
 
     # These part of codes are used for the bottoms in the GUI to control the angles
     def move_to_side(self, side):
-        """ 'DOWN', 'UP'.'LEFT','RIGHT', 'STOP'"""
+        """
+        Directions: 'DOWN', 'UP'.'LEFT','RIGHT', 'UP-LEFT', 'UP-RIGHT', 'DOWN-LEFT', 'DOWN-RIGHT', 'STOP'
+        The hex value of the directions are as defined in class Frame._command2_code
+        """
         cmd = self._command._construct_cmd(command2=side, pan_speed=self._speed['PAN'],
                                            tilt_speed=self._speed['PAN'])
         print("move to side: ", end='')

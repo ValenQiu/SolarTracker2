@@ -20,7 +20,7 @@ the format of the Pelco-D is defined as:
 - Byte 6 (Data 2) - tilt speed, range from 00 (stop) to 3F (maximum speed)
 - Byte 7 (Checksum) - sum of bytes (excluding the synchronization byte), then modulo 100 (Decimal code: 256)
 
-## 2. List of Commands
+### List of Commands
 Here is a list of those commonly used commands:
 
 | Function | Byte 1 | Byte 2 | Byte 3 | Byte 4 | Byte 5 | Byte 6 | Byte 7 |
@@ -47,15 +47,16 @@ Here is a list of those commonly used commands:
 | Query Zoom Position | 0xFF | Address | 0x00 | 0x55 | 0x00 | 0x00 | SUM |
 | Query Zoom Position Response | 0xFF | Address | 0x00 | 0x5D | Value High Byte | Value Low Byte | SUM |
 
-## 3. PTZ Controller in Python
+## 2. PTZ Controller in Python
 The [PTZ.py](/PTZ.py) is the class function developed for controlling the PTZ with integrated class function
-of various commands. Here is the detail describtion of the Ptyhon code.
+of various commands. The Python PTZ controller includes the communication and the encoding & decoding of the hexadecimal
+command message. Here is the detail description of the Python code.
 
-### 3.1. Serial Port Detection
+### 2.1. Serial Port Detection
 Run the main function ([here](/main/main.py)), and you will see the following information:
 
 (From the python terminal) It will scan all available COM ports in the device, and print out. 
-The code is located in [here](https://github.com/ValenQiu/SolarTracker2/blob/d46249ba567d52d24c70583080022112b846cabb/main/PTZ.py#L23).
+The code is located in [here](https://github.com/ValenQiu/SolarTracker2/blob/9f54e47cafa19494f45e1cc4cbf8ad9ea00612f1/PTZ%20Control/PTZ.py#L23).
 ```python
 import sys
 import serial
@@ -84,5 +85,51 @@ For Linux, is it shown as:
 
 After confirming the port name, you can comment it as you wish.
 
-### 3.2. Class Functions
+### 2.2. Class Functions
+The class functions for controlling the PTZ follows the Pelco-D protocol definition. Please refer to the 
+List of Commands in [Part 1](/README.md).
+
+#### Hexadecimal value of commands
+
+In the class function `Frame`, there is a list of the hexadecimal value of commands (the 4th byte of the command message).
+```python
+    _command2_code = {
+        'DOWN': '\x10',
+        'UP': '\x08',
+        'LEFT': '\x04',
+        'RIGHT': '\x02',
+        'UP-RIGHT': '\x0A',
+        'DOWN-RIGHT': '\x12',
+        'UP-LEFT': '\x0C',
+        'DOWN-LEFT': '\x14',
+        'STOP': '\x00',
+        'ZOOM-IN': '\x00',
+        'ZOOM-OUT': '\x00',
+        'FOCUS-FAR': '\x00',
+        'FOCUS-NEAR': '\x00',
+        'QUERY-TILT': '\x53',
+        'QUERY-PAN': '\x51',
+        'SET-PAN': '\x4B',
+        'SET-TILT': '\x4D'
+    }
+```
 #### PTZ Moving
+The PTZ has total nine motions, which of eight directions ('DOWN', 'UP'.'LEFT','RIGHT', 'UP-LEFT', 'UP-RIGHT', 'DOWN-LEFT', 'DOWN-RIGHT'),
+and 'STOP'. The class function `move_to_side(self, side)` defines the general function of giving the direction, 
+constructing the command message and send the message to the PTZ.
+
+```python
+    def move_to_side(self, side):
+        """
+        Directions: 'DOWN', 'UP'.'LEFT','RIGHT', 'UP-LEFT', 'UP-RIGHT', 'DOWN-LEFT', 'DOWN-RIGHT', 'STOP'
+        The hex value of the directions are as defined in class Frame._command2_code
+        """
+        cmd = self._command._construct_cmd(command2=side, pan_speed=self._speed['PAN'],
+                                           tilt_speed=self._speed['PAN'])
+        print("move to side: ", end='')
+        for byte in cmd:
+            print(f"{byte:02X}", end=' ')
+        print()
+        self._device.write(cmd)
+        time.sleep(0.05)
+```
