@@ -83,5 +83,24 @@ Otherwise, a message box will pop up and show the error message:
 </p>
 
 ## 3. Control the PTZ
-WILL ADD SOME CONTENTS HERE.
 
+The control program of the PTZ follows the Pelco-D protocol, more information can be found here:
+[Pelco-D tutorial](https://www.commfront.com/pages/pelco-d-protocol-tutorial), [Pelco-D protocol command list](https://www.epiphan.com/userguides/LUMiO12x/Content/UserGuides/PTZ/3-operation/PELCODcommands.htm), [Pelco Support Community](https://support.pelco.com/s/article/How-to-Troubleshoot-PTZ-Control-Issues-1538586696855?language=en_US).
+
+### Quick guideline of the Pelco-D Protocol
+The Pelco-D protocol is a communication standard for PTZ. There are 7 Bytes of hexadecimal bytes, 
+the format of the Pelco-D is defined as:
+
+| Byte 1 | Byte 2 | Byte 3 | Byte 4 | Byte 5 | Byte 6 | Byte 7 |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+| Sync  | Camera Address  | Command 1  | Command 2  | Data 1 | Data 2 | Check Sum |
+
+- Byte 1 (Sync) - the synchronization byte, fixed to FF
+- Byte 2 (Camera Address) - logical address of the camera being controlled (Address 1 is 01)
+- Byte 3 & 4 (Command 1 and 2) are shown below
+- Byte 5 (Data 1) - pan speed, range from 00 (stop) to 3F (high speed) and FF for "turbo" speed (the maximum pan speed that the device can go)
+- Byte 6 (Data 2) - tilt speed, range from 00 (stop) to 3F (maximum speed)
+- Byte 7 (Checksum) - sum of bytes (excluding the synchronization byte), then modulo 100 (Decimal code: 256)
+
+For detailed information of how to use this protocol to control the PTZ, as well as the PTZ library for this project, 
+please refer to [here](https://github.com/ValenQiu/SolarTracker2/tree/main/PTZ%20Control).
