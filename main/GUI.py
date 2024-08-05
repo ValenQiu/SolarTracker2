@@ -314,37 +314,6 @@ class GUI:
         self.load_scan_frame()
         self.load_sun_position()
 
-    # def load_communication_frame(self):
-    #     # Serial Communication Parameters Frame
-    #     # input parameters for serial communication
-    #     frame_c = tkinter.LabelFrame(self._root, text="Communication", name='communication')
-    #     frame_c.place(x=15, y=5, width=300, height=100)
-    #     # COM port setting
-    #     label_port = tk.Label(frame_c, text="Port Name:")
-    #     label_port.grid(row=0, column=0, padx=10, pady=(10, 2), sticky="w")
-    #
-    #     # Enter COM port number
-    #     self.entry_COM = tk.Entry(frame_c, width=8)
-    #     self.entry_COM.grid(row=1, column=0, padx=10, pady=(2, 10))
-    #     self.entry_COM.insert(0, default_port_name)
-    #
-    #     # Baud rate setting
-    #     label_baud = tk.Label(frame_c, text="Baud Rate:")
-    #     label_baud.grid(row=0, column=1, padx=10, pady=(10, 2), sticky="w")
-    #
-    #     # Enter baud rate number
-    #     self.entry_baud = tk.Entry(frame_c, width=10)
-    #     self.entry_baud.grid(row=1, column=1, padx=10, pady=(2, 10))
-    #     self.entry_baud.insert(0, 2400)
-    #
-    #     # Create a button to connect
-    #     self.button_connect = tk.Button(frame_c, text="Connect", bg="lightblue", width=10, command=self.connect_button_click)
-    #     self.button_connect.grid(row=0, column=2, columnspan=2, padx=10, pady=1)
-    #
-    #     # Create a button to disconnect
-    #     self.button_disconnect = tk.Button(frame_c, text="Disconnect", bg="lightblue", width=10, state="disabled", command=self.disconnect_button_click)
-    #     self.button_disconnect.grid(row=1, column=2, columnspan=2, padx=10, pady=1)
-
     def load_communication_frame(self):
         # Serial Communication Parameters Frame
         # input parameters for serial communication
