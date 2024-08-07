@@ -87,12 +87,14 @@ class SUN:
 
         # # Update the PTZ
         # self.ptz, self.ptz_line = self.update_ptz(frame)
-
         print(f"Solar Zenith Angle: {zenith:.2f} degrees")
         print(f"Solar Azimuth Angle: {azimuth:.2f} degrees")
         print('-' * 40)
         # return self.sun, self.azimuth_line, self.zenith_line, self.ptz, self.ptz_line
         return self.sun, self.azimuth_line, self.zenith_line
+
+    def update_scanning_interval(self, interval):
+        self.interval = interval
 
     # def update_ptz(self, frame):
     #     tilt = self.ptz_tilt

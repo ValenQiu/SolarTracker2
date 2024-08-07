@@ -21,6 +21,16 @@ default_port_name = 'COM3'
 # Linux
 # default_port_name = '/dev/ttyUSB0'
 
+# Set the default font for all Tkinter widgets
+default_font = {
+    'family': 'Microsoft YaHei UI',
+    'size': 9,
+    'weight': 'normal',
+    'slant': 'roman',
+    'underline': 0,
+    'overstrike': 0
+}
+
 class GUI:
     """
     The _root is the class object for the GUI
@@ -30,13 +40,11 @@ class GUI:
     _root = None
     _ptz = None
     _sun = None
-
     # Serial Communication
     entry_COM = None
     entry_baud = None
     button_connect = None
     button_disconnect = None
-
     # Control Panel Buttons
     button_up_left = None
     button_up = None
@@ -47,31 +55,27 @@ class GUI:
     button_down_left = None
     button_down = None
     button_down_right = None
-
+    # Scan interval
+    scan_time = None
     # Set Joint Speeds
     tilt_speed = None
     pan_speed = None
     tilt_speed_label = None
     pan_speed_label = None
-
     # PTZ Joint Positions
     pan_pos = 0.0
     tilt_pos = 0.0
-
     # PTZ Set Position
     enrty_tilt = None
     entry_pan = None
-
     # Global variable to track if the button is being pressed
     is_button_pressed = False
 
     # Flag for tracking the sun
     sun_track_flag = False
-
     # Sun Angles
     zenith = 0.0
     azimuth = 0.0
-
     # Buttons of Sun Tracking
     track_on = None
     track_off = None
@@ -83,18 +87,16 @@ class GUI:
         # Create the main application window
         self._root = tk.Tk()
         self._root.title("Solar Tracker")
+        # Get the font object and configure the default font
+        default_font_obj = tk.font.nametofont("TkDefaultFont")
+        default_font_obj.configure(**default_font)
         self._root.geometry('960x420+50+150')  # Set the window size
+        # print(tk.font.nametofont('TkTextFont').actual())
         self._sun = SUN()
         self.load_GUI()
+        # set the scanning interval (input in seconds, set in ms)
+        self._sun.update_scanning_interval(int(self.scan_time.get())*1000)
         self.update_solar_position()
-        # if self._ptz is not None:
-        #     self.update_ptz_position()
-        # Create the animation
-        # self.ani = FuncAnimation(self._sun.fig, self._sun.update, interval=self._sun.interval, blit=True)
-        # for testing
-        # num_frames = len(self._sun.get_solar_positions_for_a_day())
-        # self.ani = FuncAnimation(self._sun.fig, self._sun.update_a_day, frames=num_frames, interval=self._sun.interval, blit=True)
-
         self._root.mainloop()
 
     ##################################################################################################
@@ -304,6 +306,14 @@ class GUI:
         self.track_on['state'] = 'normal'
 
     ##################################################################################################
+    # Change Scanning Interval
+    ##################################################################################################
+    def update_scanning_setting_click(self):
+        scan_time = int(self.scan_time.get())
+        self._sun.update_scanning_interval(scan_time * 1000)
+        messagebox.showinfo("Save Change!", f"Now the scanning interval is {scan_time} seconds")
+
+    ##################################################################################################
     # GUI Loading
     ##################################################################################################
     def load_GUI(self):
@@ -319,13 +329,14 @@ class GUI:
         # input parameters for serial communication
         frame_c = tkinter.LabelFrame(self._root, text="Communication", name='communication')
         frame_c.place(x=15, y=5, width=300, height=100)
+
         # COM port setting
         label_port = tk.Label(frame_c, text="Port Name:")
         label_port.grid(row=0, column=0, padx=10, pady=(10, 2), sticky="w")
 
         # Enter COM port number
         self.entry_COM = tk.Entry(frame_c, width=8)
-        self.entry_COM.grid(row=1, column=0, padx=10, pady=(2, 10))
+        self.entry_COM.grid(row=1, column=0, padx=10, pady=(2, 10), sticky="w")
         self.entry_COM.insert(0, default_port_name)
 
         # Baud rate setting
@@ -333,17 +344,18 @@ class GUI:
         label_baud.grid(row=0, column=1, padx=10, pady=(10, 2), sticky="w")
 
         # Enter baud rate number
-        self.entry_baud = tk.Entry(frame_c, width=10)
-        self.entry_baud.grid(row=1, column=1, padx=10, pady=(2, 10))
+        self.entry_baud = tk.Entry(frame_c, width=8)
+        self.entry_baud.grid(row=1, column=1, padx=10, pady=(2, 10), sticky="w")
         self.entry_baud.insert(0, 2400)
 
         # Create a button to connect
-        self.button_connect = tk.Button(frame_c, text="Connect", bg="lightblue", width=10, command=self.connect_button_click)
-        self.button_connect.grid(row=0, column=2, padx=10, pady=1)
+        self.button_connect = tk.Button(frame_c, text="Connect", bg="lightblue", command=self.connect_button_click)
+        self.button_connect.grid(row=0, column=2, padx=10, pady=1, sticky="nsew")
 
         # Create a button to disconnect
-        self.button_disconnect = tk.Button(frame_c, text="Disconnect", bg="lightblue", width=10, state="disabled", command=self.disconnect_button_click)
-        self.button_disconnect.grid(row=1, column=2, padx=10, pady=1)
+        self.button_disconnect = tk.Button(frame_c, text="Disconnect", bg="lightblue", state="disabled",
+                                           command=self.disconnect_button_click)
+        self.button_disconnect.grid(row=1, column=2, padx=10, pady=1, sticky="nsew")
 
     def load_button_panel(self):
         frame_b = tkinter.LabelFrame(self._root, text="Control Panel", name='panels')
@@ -547,13 +559,13 @@ class GUI:
         frame_s.place(x=330, y=250, width=300, height=155)
 
         # Create a label
-        scan_time_label = tk.Label(frame_s, text='Scan Time (s): ')
+        scan_time_label = tk.Label(frame_s, text='Scan Interval (s): ')
         scan_time_label.grid(row=0, column=0, padx=(3, 3), pady=3, sticky="w")
 
         # Enter Scan Time
-        scan_time = tk.Entry(frame_s, width=10)
-        scan_time.grid(row=0, column=1, padx=10, pady=3, sticky="e")
-        scan_time.insert(0, '5')
+        self.scan_time = tk.Entry(frame_s, width=10)
+        self.scan_time.grid(row=0, column=1, padx=10, pady=3, sticky="e")
+        self.scan_time.insert(0, '30')
 
         # Create a label
         label_tilt_t = tk.Label(frame_s, text='Tilt Interval (angle): ')
@@ -574,7 +586,7 @@ class GUI:
         pan_t.insert(0, '5')
 
         # Create a button to save the setting
-        set = tk.Button(frame_s, text="Set", bg="lightblue", width=5, command=self.on_button_click())
+        set = tk.Button(frame_s, text="Set", bg="lightblue", width=5, command=self.update_scanning_setting_click)
         set.grid(row=3, column=0, padx=(3, 3), pady=5)
 
         # Create a button to start the scanning
@@ -644,9 +656,9 @@ class GUI:
         azimuth = round(float(azimuth), 2)
         self.zenith['text'] = zenith
         self.azimuth['text'] = azimuth
-        print("Zebutg: ", zenith)
-        print("Azimuth: ", azimuth)
-        print(self.sun_track_flag)
+        # print("Zebutg: ", zenith)
+        # print("Azimuth: ", azimuth)
+        # print(self.sun_track_flag)
 
         if self._ptz is None:
             return
@@ -680,5 +692,5 @@ class GUI:
     #     self._root.after(self._sun.interval, self.update_ptz_position)
 
 
-if __name__ == "__main__":
-    gui = GUI()
+# if __name__ == "__main__":
+#     gui = GUI()

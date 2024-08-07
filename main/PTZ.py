@@ -44,6 +44,9 @@ class PTZ:
         'TILT': '\x1F'   # Tilt speed
     }
 
+    pan_offset = -10      # the angular offset of the north direction, (+) if goes to east
+    tilt_offset = 0     # the angular offset of the azimuth axis, (-) if goes to south
+
     # connect
     def __init__(self, port='', baudrate=2400, timeout_=10, address=1):
 
@@ -153,7 +156,6 @@ class PTZ:
         print("stop: ", end='')
         for byte in cmd:
             print(f"{byte:02X}", end=' ')
-        print()
         self._device.write(cmd)
 
     def move_to_left(self):
@@ -203,7 +205,7 @@ class PTZ:
     # angle converter
     def convert_tile_angle_to_custom(self, tile_angle):
         # edit it if need
-        # tile_angle = 360 + tile_angle
+        tile_angle = tile_angle - self.tilt_offset
         # # normalize
         if tile_angle >= 90:
             tile_angle = tile_angle - 360
@@ -211,10 +213,28 @@ class PTZ:
 
     def convert_tile_angle_to_default(self, tile_angle):
         # edit it if need
-        tile_angle = tile_angle
+        tile_angle = tile_angle + self.tilt_offset
         if tile_angle <= 0:
             tile_angle = tile_angle + 360
+        elif tile_angle > 360:
+            tile_angle = tile_angle - 360
         return round(tile_angle, 2)
+
+    def convert_pan_angle_to_custom(self, pan_angle):
+        pan_angle = pan_angle + self.pan_offset
+        if pan_angle > 360:
+            pan_angle = pan_angle - 360
+        elif pan_angle <= 0:
+            pan_angle = pan_angle + 360
+        return round(pan_angle, 2)
+
+    def convert_pan_angle_to_default(self, pan_angle):
+        pan_angle = pan_angle - self.pan_offset
+        if pan_angle > 360:
+            pan_angle = pan_angle - 360
+        elif pan_angle <= 0:
+            pan_angle = pan_angle + 360
+        return round(pan_angle, 2)
 
     def query_tilt_position(self):
         '''
@@ -301,7 +321,8 @@ class PTZ:
             pan_low = response[5]
             # print(type(pan_high))
             pan_position = self.convert_position(pan_high, pan_low)
-            print(pan_position)
+            # print(pan_position)
+            pan_position = self.convert_pan_angle_to_custom(pan_position)
             self._position['PAN'] = pan_position
 
     def set_pan_position(self, angle):
@@ -318,6 +339,7 @@ class PTZ:
            tuple: A tuple containing the high byte and low byte values.
            """
         # Ensure the angle is within the valid range of 0 to 360 degrees
+        angle = self.convert_pan_angle_to_default(angle)
         angle = angle * 100
 
         # Calculate the high byte and low byte values
