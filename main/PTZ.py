@@ -6,6 +6,8 @@ Contact:    valen.qiu@connect.polyu.hk
 """
 
 import sys
+
+import numpy as np
 import serial
 import serial.tools.list_ports
 from threading import Lock
@@ -365,6 +367,22 @@ class PTZ:
             print(f"{byte:02X}", end=' ')
         print()
         self._device.write(cmd)
+
+    def back_to_home_position_at_night(self):
+        """
+        In Hong Kong, the average range of the annual solar azimuth angle is:
+        |---------------------------------------------------------------|
+        |Morning (sun rise):     60-90 degree, from northeast to east   |
+        |Noon:                   180-210 degree, south                  |
+        |Afternoon (sun set):    240-300 degree, from west to northwest |
+        |---------------------------------------------------------------|
+        Therefore, the range of homing is set as: from 260 back to 60, with the interval of 50 degrees
+        """
+        azimuth_steps = [260, 210, 160, 110, 60]
+        for step in azimuth_steps:
+            self.set_pan_position(step)
+            time.sleep(5)
+        return True
 
 
 # Peclo-D data construction

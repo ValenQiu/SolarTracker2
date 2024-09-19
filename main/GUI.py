@@ -72,7 +72,10 @@ class GUI:
     is_button_pressed = False
 
     # Flag for tracking the sun
-    sun_track_flag = False
+    sun_track_flag = False      # The flag for starting/stopping sun tracking
+    day_flag = False            # The flag for identifying day (True) and night (False)
+    home_flag = False           # The flag for identifying whether the PTZ has been set to home position at night
+    homing_action_flag = False  # The flag for identifying whether the PTZ should go to home position
     # Sun Angles
     zenith = 0.0
     azimuth = 0.0
@@ -660,12 +663,37 @@ class GUI:
         # print("Azimuth: ", azimuth)
         # print(self.sun_track_flag)
 
+        # check the day / night state by using the zenith angle
+        if zenith > 90 or zenith < 0:
+            self.day_flag = False       # when the zenith angle is larger than 90 degrees, it means the sunset
+            self.homing_action_flag = True      # if sunset, then take the homing action
+        else:
+            self.day_flag = True                # when the zenith angle is smaller than 90 degrees, it means the sunrise
+            self.homing_action_flag = False     # if sun rise, then disable the homing action
+            self.home_flag = False              # if sun rise, the PTZ doesn't need to stay at the home position
+
         if self._ptz is None:
             return
         if self.sun_track_flag is not False:
+            # the sun tracking button has been pressed, start the tracking
             print("it should track now")
-            self._ptz.set_pan_position(azimuth)
-            self._ptz.set_tilt_position(zenith)
+            if self.day_flag is True:
+                self._ptz.set_pan_position(azimuth)
+                self._ptz.set_tilt_position(zenith)
+            else:
+                # the day_flag is False
+                if self.home_flag is True:
+                    self._ptz.stop()
+                else:
+                    # The PTZ is not yet home
+                    self.homing_action_flag = True      # rise the flag for homing the PTZ
+
+            if self.homing_action_flag is True:
+                # after set the PTZ back to the home position, returns the home_flag to be True
+                self.home_flag = self._ptz.back_to_home_position_at_night()
+                if self.home_flag:
+                    # The homing action will only be activated once a day
+                    self.homing_action_flag = False
         else:
             return
 
