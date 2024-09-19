@@ -666,7 +666,6 @@ class GUI:
         # check the day / night state by using the zenith angle
         if zenith > 90 or zenith < 0:
             self.day_flag = False       # when the zenith angle is larger than 90 degrees, it means the sunset
-            self.homing_action_flag = True      # if sunset, then take the homing action
         else:
             self.day_flag = True                # when the zenith angle is smaller than 90 degrees, it means the sunrise
             self.homing_action_flag = False     # if sun rise, then disable the homing action
@@ -683,9 +682,11 @@ class GUI:
             else:
                 # the day_flag is False
                 if self.home_flag is True:
+                    print("At night, pan at home position")
                     self._ptz.stop()
                 else:
                     # The PTZ is not yet home
+                    print("At night, homing the pan position")
                     self.homing_action_flag = True      # rise the flag for homing the PTZ
 
             if self.homing_action_flag is True:
@@ -693,6 +694,7 @@ class GUI:
                 self.home_flag = self._ptz.back_to_home_position_at_night()
                 if self.home_flag:
                     # The homing action will only be activated once a day
+                    print("PTZ has been returned to home position!")
                     self.homing_action_flag = False
         else:
             return

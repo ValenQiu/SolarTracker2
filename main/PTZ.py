@@ -380,8 +380,10 @@ class PTZ:
         """
         azimuth_steps = [260, 210, 160, 110, 60]
         for step in azimuth_steps:
+            print("PTZ Stepping Back To Home Position: ", step)
             self.set_pan_position(step)
-            time.sleep(5)
+            time.sleep(10)
+
         return True
 
 
