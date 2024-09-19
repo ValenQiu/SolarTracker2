@@ -350,12 +350,12 @@ class GUI:
 
         # Create a button to connect
         self.button_connect = tk.Button(frame_c, text="Connect", bg="lightblue", command=self.connect_button_click)
-        self.button_connect.grid(row=0, column=2, padx=10, pady=1, sticky="nsew")
+        self.button_connect.grid(row=0, column=2, padx=(10, 20), pady=1, sticky="nsew")
 
         # Create a button to disconnect
         self.button_disconnect = tk.Button(frame_c, text="Disconnect", bg="lightblue", state="disabled",
                                            command=self.disconnect_button_click)
-        self.button_disconnect.grid(row=1, column=2, padx=10, pady=1, sticky="nsew")
+        self.button_disconnect.grid(row=1, column=2, padx=(10, 20), pady=1, sticky="nsew")
 
     def load_button_panel(self):
         frame_b = tkinter.LabelFrame(self._root, text="Control Panel", name='panels')
